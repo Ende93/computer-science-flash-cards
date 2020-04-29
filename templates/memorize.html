@@ -14,23 +14,16 @@
     <hr/>
 
     <div class="row memorizePanel">
-        <!--
-        <div class="col-xs-2">
-            <div class="alignContainer">
-                <div class="alignMiddle text-right">
-                    <br/>
-                    <br/>
-                    <a href="wewetw"><i class="fa fa-chevron-left fa-5x"></i></a>
-                </div>
-            </div>
-        </div>
-        -->
         <div class="col-xs-8 col-xs-offset-2">
             <div class="panel panel-default cardFront">
                 <div class="panel-body">
                     <div class="alignContainer">
                         <div class="alignMiddle frontText">
-                            <h3 class="text-center">{{ card.front }}</h3>
+                            <h3 class="text-center">{{ card.front }}
+                                {% if card.weight > 0 %}
+                                    [{{ card.weight }}]
+                                {% endif %}
+                            </h3>
                         </div>
                     </div>
                 </div>
@@ -55,17 +48,6 @@
                 </div>
             </div>
         </div>
-        <!--
-        <div class="col-xs-2">
-            <div class="alignContainer">
-                <div class="alignMiddle text-left">
-                    <br/>
-                    <br/>
-                    <a href="ergergerge"><i class="fa fa-chevron-right fa-5x"></i></a>
-                </div>
-            </div>
-        </div>
-        -->
     </div>
 
     <div class="row">

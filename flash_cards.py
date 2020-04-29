@@ -44,6 +44,20 @@ def close_db(error):
     if hasattr(g, 'sqlite_db'):
         g.sqlite_db.close()
 
+# fix table column
+def add_column(column_name):
+    db = get_db()
+    cursor = db.execute('SELECT * FROM cards LIMIT 1')
+    card = cursor.fetchone()
+    try:
+        card.keys().index(column_name)
+    except ValueError:
+        command = 'ALTER TABLE cards ADD COLUMN ' + column_name + ' integer default 0'
+        db.execute(command)
+        db.commit()
+
+def alter_db():
+    add_column('weight')
 
 # -----------------------------------------------------------
 
@@ -54,6 +68,12 @@ def close_db(error):
 #     init_db()
 #     return 'Initialized the database.'
 
+@app.route('/alterdb')
+def alterdb():
+    if not session.get('logged_in'):
+        return redirect(url_for('login'))
+    alter_db()
+    return redirect(url_for('cards'))
 
 @app.route('/')
 def index():
@@ -69,7 +89,7 @@ def cards():
         return redirect(url_for('login'))
     db = get_db()
     query = '''
-        SELECT id, type, front, back, known
+        SELECT id, type, front, back, known, weight
         FROM cards
         ORDER BY id DESC
     '''
@@ -97,7 +117,7 @@ def filter_cards(filter_name):
         return redirect(url_for('cards'))
 
     db = get_db()
-    fullquery = "SELECT id, type, front, back, known FROM cards " + query + " ORDER BY id DESC"
+    fullquery = "SELECT id, type, front, back, known, weight FROM cards " + query + " ORDER BY id DESC"
     cur = db.execute(fullquery)
     cards = cur.fetchall()
     return render_template('cards.html', cards=cards, filter_name=filter_name)
@@ -124,7 +144,7 @@ def edit(card_id):
         return redirect(url_for('login'))
     db = get_db()
     query = '''
-        SELECT id, type, front, back, known
+        SELECT id, type, front, back, known, weight
         FROM cards
         WHERE id = ?
     '''
@@ -231,7 +251,7 @@ def get_card(type):
 
     query = '''
       SELECT
-        id, type, front, back, known
+        id, type, front, back, known, weight
       FROM cards
       WHERE
         type = ?
@@ -249,7 +269,7 @@ def get_card_by_id(card_id):
 
     query = '''
       SELECT
-        id, type, front, back, known
+        id, type, front, back, known, weight
       FROM cards
       WHERE
         id = ?

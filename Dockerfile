@@ -3,7 +3,8 @@ MAINTAINER Tinpee <tinpee.dev@gmail.com>
 
 ADD . /src
 WORKDIR /src
-RUN pip install --upgrade pip \
+RUN pip config set global.index-url https://mirrors.aliyun.com/pypi/simple/ \
+    && pip install --upgrade pip \
     && pip install flask gunicorn
 
 COPY entrypoint.sh /

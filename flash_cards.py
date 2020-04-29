@@ -142,7 +142,7 @@ def add_card():
                 request.form['back'],
                 request.form['weight'],
                 request.form['language'],
-                time.time(),
+                int(time() * 1000),
                 ])
     db.commit()
     flash('New card was successfully added.')

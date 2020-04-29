@@ -5,11 +5,11 @@
         <h2>Add a Card</h2>
         <form action="{{ url_for('add_card') }}" method="post" class="cardForm">
             <div class="form-group">
+                <input type="radio" name="type" hidden checked value="1" id="general" />
                 <label for="general" class="toggleButton btn btn-default btn-lg">General &nbsp;
-                    <input type="radio" name="type" hidden checked value="1" id="general" />
                 </label>
+                <input type="radio" hidden name="type" value="2" id="code" />
                 <label for="code" class="toggleButton btn btn-default btn-lg">Code &nbsp;
-                    <input type="radio" hidden name="type" value="2" id="code" />
                 </label>
             </div>
             <div class="form-group fieldFront">

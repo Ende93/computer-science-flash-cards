@@ -83,6 +83,11 @@ def index():
     else:
         return redirect(url_for('login'))
 
+@app.route('/add_card')
+def add_card_page():
+    if not session.get('logged_in'):
+        return redirect(url_for('login'))
+    return render_template('add_card.html')
 
 @app.route('/cards')
 def cards():
@@ -138,7 +143,7 @@ def add_card():
                 ])
     db.commit()
     flash('New card was successfully added.')
-    return redirect(url_for('cards'))
+    return redirect(url_for('add_card'))
 
 
 @app.route('/edit/<card_id>')

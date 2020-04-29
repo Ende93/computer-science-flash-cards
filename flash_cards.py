@@ -2,6 +2,7 @@ import os
 import sqlite3
 from flask import Flask, request, session, g, redirect, url_for, abort, \
     render_template, flash
+from time import time
 
 app = Flask(__name__)
 app.config.from_object(__name__)
@@ -59,6 +60,7 @@ def add_column(column_name, type):
 def alter_db():
     add_column('weight', 'integer default 0')
     add_column('language', 'text')
+    add_column('timestamp', 'integer')
 
 # -----------------------------------------------------------
 
@@ -134,12 +136,13 @@ def add_card():
     if not session.get('logged_in'):
         return redirect(url_for('login'))
     db = get_db()
-    db.execute('INSERT INTO cards (type, front, back, weight, language) VALUES (?, ?, ?, ?, ?)',
+    db.execute('INSERT INTO cards (type, front, back, weight, language, timestamp) VALUES (?, ?, ?, ?, ?, ?)',
                [request.form['type'],
                 request.form['front'],
                 request.form['back'],
                 request.form['weight'],
                 request.form['language'],
+                time.time(),
                 ])
     db.commit()
     flash('New card was successfully added.')

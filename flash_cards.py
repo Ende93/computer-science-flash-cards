@@ -45,19 +45,20 @@ def close_db(error):
         g.sqlite_db.close()
 
 # fix table column
-def add_column(column_name):
+def add_column(column_name, type):
     db = get_db()
     cursor = db.execute('SELECT * FROM cards LIMIT 1')
     card = cursor.fetchone()
     try:
         card.keys().index(column_name)
     except ValueError:
-        command = 'ALTER TABLE cards ADD COLUMN ' + column_name + ' integer default 0'
+        command = 'ALTER TABLE cards ADD COLUMN ' + column_name + ' ' + type
         db.execute(command)
         db.commit()
 
 def alter_db():
-    add_column('weight')
+    add_column('weight', 'integer default 0')
+    add_column('language', 'text')
 
 # -----------------------------------------------------------
 
@@ -89,7 +90,7 @@ def cards():
         return redirect(url_for('login'))
     db = get_db()
     query = '''
-        SELECT id, type, front, back, known, weight
+        SELECT id, type, front, back, known, weight, language
         FROM cards
         ORDER BY id DESC
     '''
@@ -117,7 +118,7 @@ def filter_cards(filter_name):
         return redirect(url_for('cards'))
 
     db = get_db()
-    fullquery = "SELECT id, type, front, back, known, weight FROM cards " + query + " ORDER BY id DESC"
+    fullquery = "SELECT id, type, front, back, known, weight, language FROM cards " + query + " ORDER BY id DESC"
     cur = db.execute(fullquery)
     cards = cur.fetchall()
     return render_template('cards.html', cards=cards, filter_name=filter_name)
@@ -128,10 +129,12 @@ def add_card():
     if not session.get('logged_in'):
         return redirect(url_for('login'))
     db = get_db()
-    db.execute('INSERT INTO cards (type, front, back) VALUES (?, ?, ?)',
+    db.execute('INSERT INTO cards (type, front, back, weight, language) VALUES (?, ?, ?, ?, ?)',
                [request.form['type'],
                 request.form['front'],
-                request.form['back']
+                request.form['back'],
+                request.form['weight'],
+                request.form['language'],
                 ])
     db.commit()
     flash('New card was successfully added.')
@@ -144,7 +147,7 @@ def edit(card_id):
         return redirect(url_for('login'))
     db = get_db()
     query = '''
-        SELECT id, type, front, back, known, weight
+        SELECT id, type, front, back, known, weight, language
         FROM cards
         WHERE id = ?
     '''
@@ -166,7 +169,9 @@ def edit_card():
           type = ?,
           front = ?,
           back = ?,
-          known = ?
+          known = ?,
+          weight = ?,
+          language = ?
         WHERE id = ?
     '''
     db.execute(command,
@@ -174,7 +179,9 @@ def edit_card():
                 request.form['front'],
                 request.form['back'],
                 known,
-                request.form['card_id']
+                request.form['card_id'],
+                request.form['weight'],
+                request.form['language'],
                 ])
     db.commit()
     flash('Card saved.')
@@ -251,7 +258,7 @@ def get_card(type):
 
     query = '''
       SELECT
-        id, type, front, back, known, weight
+        id, type, front, back, known, weight, language
       FROM cards
       WHERE
         type = ?

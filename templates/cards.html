@@ -6,10 +6,10 @@
         <form action="{{ url_for('add_card') }}" method="post" class="cardForm">
             <div class="form-group">
                 <label for="general" class="toggleButton btn btn-default btn-lg">General &nbsp;
-                    <input type="radio" name="type" value="1" id="general"/>
+                    <input type="radio" name="type" value="1" id="general" />
                 </label>
                 <label for="code" class="toggleButton btn btn-default btn-lg">Code &nbsp;
-                    <input type="radio" name="type" value="2" id="code"/>
+                    <input type="radio" name="type" value="2" id="code" />
                 </label>
             </div>
             <div class="form-group fieldFront">
@@ -18,11 +18,15 @@
             </div>
             <div class="form-group fieldBack">
                 <label for="back">Back of Card</label>
-                <textarea name="back"
-                          class="form-control"
-                          id="back"
-                          placeholder="back of card"
-                          rows="12"></textarea>
+                <textarea name="back" class="form-control" id="back" placeholder="back of card" rows="12"></textarea>
+            </div>
+            <div class="form-group fieldFront">
+                <label for="back">weight</label>
+                <input name="weight" type="number" value="0" class="form-control">
+            </div>
+            <div class="form-group fieldBack">
+                <label for="back">language</label>
+                <input name="language" type="text" value="" class="form-control">
             </div>
             <div class="form-group">
                 <button type="submit" class="saveButton btn btn-lg btn-primary">Save</button>
@@ -34,11 +38,16 @@
         <h2>{{ cards|length }} Card{{ '' if (cards|length == 1) else 's' }}</h2>
     </div>
     <div class="btn-group btn-group-md" role="group" aria-label="filters">
-        <a href="{{ url_for('filter_cards', filter_name="all") }}" class="btn btn-{{ "primary" if filter_name == "all" else "default" }}">All</a>
-        <a href="{{ url_for('filter_cards', filter_name="general") }}" class="btn btn-{{ "primary" if filter_name == "general" else "default" }}">General</a>
-        <a href="{{ url_for('filter_cards', filter_name="code") }}" class="btn btn-{{ "primary" if filter_name == "code" else "default" }}">Code</a>
-        <a href="{{ url_for('filter_cards', filter_name="known") }}" class="btn btn-{{ "primary" if filter_name == "known" else "default" }}">Known</a>
-        <a href="{{ url_for('filter_cards', filter_name="unknown") }}" class="btn btn-{{ "primary" if filter_name == "unknown" else "default" }}">Unknown</a>
+        <a href="{{ url_for('filter_cards', filter_name="all") }}"
+            class="btn btn-{{ "primary" if filter_name == "all" else "default" }}">All</a>
+        <a href="{{ url_for('filter_cards', filter_name="general") }}"
+            class="btn btn-{{ "primary" if filter_name == "general" else "default" }}">General</a>
+        <a href="{{ url_for('filter_cards', filter_name="code") }}"
+            class="btn btn-{{ "primary" if filter_name == "code" else "default" }}">Code</a>
+        <a href="{{ url_for('filter_cards', filter_name="known") }}"
+            class="btn btn-{{ "primary" if filter_name == "known" else "default" }}">Known</a>
+        <a href="{{ url_for('filter_cards', filter_name="unknown") }}"
+            class="btn btn-{{ "primary" if filter_name == "unknown" else "default" }}">Unknown</a>
     </div>
 
     <br />
@@ -46,27 +55,32 @@
 
     <table class="table table-bordered">
         {% for card in cards %}
-            <tr>
-                <td>
-                    <a href="{{ url_for('edit', card_id=card.id) }}" class="btn btn-xs btn-primary"><i class="fa fa-pencil" aria-hidden="true"></i></a>
-                </td>
-                <td class="cardContent">
-                    <h4>
-                        {{ card.front }}
-                    </h4>
-                    {% if card.type == 1 %}
-                        {{ card.back|replace("\n", "<br />")|safe }}
-                    {% else %}
+        <tr>
+            <td>
+                <a href="{{ url_for('edit', card_id=card.id) }}" class="btn btn-xs btn-primary"><i class="fa fa-pencil-alt"
+                        aria-hidden="true"></i></a>
+            </td>
+            <td class="cardContent">
+                <h4>
+                    {{ card.front }}
+                </h4>
+                {% if card.type == 1 %}
+                {{ card.back|replace("\n", "<br />")|safe }}
+                {% else %}
+                    {% if card.language == None %}
                         <pre><code>{{ card.back|escape }}</code></pre>
+                    {% else %}
+                        <pre><code class="language-{{card.language}}">{{ card.back|escape }}</code></pre>
                     {% endif %}
-                </td>
-            </tr>
+                {% endif %}
+            </td>
+        </tr>
         {% else %}
-            <tr>
-                <td>
-                    <em>No cards to show.</em>
-                </td>
-            </tr>
+        <tr>
+            <td>
+                <em>No cards to show.</em>
+            </td>
+        </tr>
         {% endfor %}
     </table>
 

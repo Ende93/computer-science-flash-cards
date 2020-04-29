@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.13.0/css/all.min.css">
+    <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.0.0/styles/default.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}"/>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='highlight-theme-github.css') }}" />
     <script src="{{ url_for('static', filename='highlight.pack.js') }}"></script>
@@ -41,7 +42,8 @@
         </div>
     </div>
     <script src="https://cdn.bootcdn.net/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js" defer></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.0.0/highlight.min.js" async onload="document.querySelectorAll('pre code').forEach((block) => {hljs.highlightBlock(block);});"></script>
     
     <script src="{{ url_for('static', filename='fastclick.min.js') }}"></script>
     <script src="{{ url_for('static', filename='general.js') }}"></script>

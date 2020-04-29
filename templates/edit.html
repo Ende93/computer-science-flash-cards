@@ -25,6 +25,14 @@
                           placeholder="back of card"
                           rows="12">{{ card.back|e }}</textarea>
             </div>
+            <div class="form-group">
+                <label for="back">weight</label>
+                <input name="weight" type="number" value="{{card.weight}}" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="back">language</label>
+                <input name="language" type="text" value="{{card.language}}" class="form-control">
+            </div>
             <div class="row">
                 <div class="col-xs-6">
                     <div class="checkbox">

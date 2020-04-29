@@ -6,7 +6,9 @@
             <div class="btn-group btn-group-lg" role="group" aria-label="card type">
                 <a href="{{ url_for('general') }}" class="btn btn-{{ "primary" if card_type == "general" else "default" }}">General</a>
                 <a href="{{ url_for('code') }}" class="btn btn-{{ "primary" if card_type == "code" else "default" }}">Code</a>
+                {% if session.logged_in %}
                 <a href="{{ url_for('reset') }}" class="btn btn-danger">Reset known</a>
+                {% endif %}
             </div>
         </div>
     </div>
@@ -54,18 +56,21 @@
 
     <div class="row">
         <div class="col-xs-12 text-center">
+            {% if session.logged_in %}
             <a href="{{ url_for('mark_known', card_id=card.id, card_type=card_type) }}" class="btn btn-success btn-lg">
                 <i class="fa fa-check"></i>
                 I Know It
             </a>
             &nbsp;
             &nbsp;
+            {% endif %}
             <a href="{{ url_for(card_type) }}" class="btn btn-primary btn-lg">
                 Next Card
                 <i class="fa fa-arrow-right"></i>
             </a>
         </div>
     </div>
+    {% if session.logged_in %}
     <div class="row">
         <div class="col-xs-12 text-center">
             <br />
@@ -78,5 +83,6 @@
 
         </div>
     </div>
+    {% endif %}
 
 {% endblock %}

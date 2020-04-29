@@ -22,7 +22,10 @@
                         <ul class="nav navbar-nav navbar-right">
                             {% if not session.logged_in %}
                                 <li><a href="{{ url_for('login') }}">log in</a></li>
+                                <li><a href="{{ url_for('general') }}">general</a></li>
+                                <li><a href="{{ url_for('code') }}">code</a></li>
                             {% else %}
+                                <li><a href="{{ url_for('add_card_page') }}">add card</a></li>
                                 <li><a href="{{ url_for('cards') }}">cards</a></li>
                                 <li><a href="{{ url_for('general') }}">general</a></li>
                                 <li><a href="{{ url_for('code') }}">code</a></li>

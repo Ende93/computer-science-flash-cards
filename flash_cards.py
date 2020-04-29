@@ -207,8 +207,6 @@ def delete(card_id):
 @app.route('/general')
 @app.route('/general/<card_id>')
 def general(card_id=None):
-    if not session.get('logged_in'):
-        return redirect(url_for('login'))
     return memorize("general", card_id)
 
 
@@ -222,8 +220,6 @@ def reset():
 @app.route('/code')
 @app.route('/code/<card_id>')
 def code(card_id=None):
-    if not session.get('logged_in'):
-        return redirect(url_for('login'))
     return memorize("code", card_id)
 
 def reset_card_known():

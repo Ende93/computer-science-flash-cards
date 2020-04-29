@@ -180,6 +180,13 @@ def general(card_id=None):
     return memorize("general", card_id)
 
 
+@app.route('/reset')
+def reset():
+    if not session.get('logged_in'):
+        return redirect(url_for('login'))
+    reset_card_known();
+    return redirect(url_for('general'))
+
 @app.route('/code')
 @app.route('/code/<card_id>')
 def code(card_id=None):
@@ -187,6 +194,15 @@ def code(card_id=None):
         return redirect(url_for('login'))
     return memorize("code", card_id)
 
+def reset_card_known():
+    db = get_db()
+    query = '''
+        UPDATE cards
+        SET known = 0
+        WHERE known = 1
+    '''
+    db.execute(query)
+    db.commit()
 
 def memorize(card_type, card_id):
     if card_type == "general":

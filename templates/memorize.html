@@ -6,6 +6,7 @@
             <div class="btn-group btn-group-lg" role="group" aria-label="card type">
                 <a href="{{ url_for('general') }}" class="btn btn-{{ "primary" if card_type == "general" else "default" }}">General</a>
                 <a href="{{ url_for('code') }}" class="btn btn-{{ "primary" if card_type == "code" else "default" }}">Code</a>
+                <a href="{{ url_for('reset') }}" class="btn btn-danger">Reset known</a>
             </div>
         </div>
     </div>
@@ -70,7 +71,7 @@
     <div class="row">
         <div class="col-xs-12 text-center">
             <a href="javascript:" class="btn btn-primary btn-lg flipCard">
-                <i class="fa fa-exchange"></i>
+                <i class="fa fa-exchange-alt"></i>
                 Flip Card
             </a>
             &nbsp;

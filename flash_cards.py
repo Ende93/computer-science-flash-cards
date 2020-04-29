@@ -187,9 +187,9 @@ def edit_card():
                 request.form['front'],
                 request.form['back'],
                 known,
-                request.form['card_id'],
                 request.form['weight'],
                 request.form['language'],
+                request.form['card_id']
                 ])
     db.commit()
     flash('Card saved.')

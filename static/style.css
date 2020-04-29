@@ -22,10 +22,6 @@ textarea {
     vertical-align: middle;
 }
 
-.cardBack {
-    display: none;
-}
-
 .largerText {
     font-size: 2em;
 }

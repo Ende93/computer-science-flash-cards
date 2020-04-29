@@ -14,8 +14,9 @@
     <hr/>
 
     <div class="row memorizePanel">
-        <div class="col-xs-8 col-xs-offset-2">
-            <div class="panel panel-default cardFront">
+        <div class="col-xs-8 col-xs-offset-2 card-flip">
+            <section class="flip">
+            <div class="panel panel-default cardFront front">
                 <div class="panel-body">
                     <div class="alignContainer">
                         <div class="alignMiddle frontText">
@@ -28,7 +29,7 @@
                     </div>
                 </div>
             </div>
-            <div class="panel panel-primary cardBack">
+            <div class="panel panel-primary cardBack back">
                 <div class="panel-body">
                     <div class="alignContainer">
                         <div class="alignMiddle frontText">
@@ -47,17 +48,12 @@
                     </div>
                 </div>
             </div>
+            </section>
         </div>
     </div>
 
     <div class="row">
         <div class="col-xs-12 text-center">
-            <a href="javascript:" class="btn btn-primary btn-lg flipCard">
-                <i class="fa fa-exchange-alt"></i>
-                Flip Card
-            </a>
-            &nbsp;
-            &nbsp;
             <a href="{{ url_for('mark_known', card_id=card.id, card_type=card_type) }}" class="btn btn-success btn-lg">
                 <i class="fa fa-check"></i>
                 I Know It

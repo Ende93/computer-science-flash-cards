@@ -206,6 +206,23 @@ def delete(card_id):
     flash('Card deleted.')
     return redirect(url_for('cards'))
 
+@app.route('/within_a_day')
+def within_a_day():
+    return memorize("within_a_day", None)
+
+def get_cards_within_a_day():
+    now = int(time() * 1000)
+    left = now - 24 * 60 * 60 * 1000
+
+    db = get_db()
+    query = '''
+        SELECT *
+        FROM cards
+        where timestamp >= ? and timestamp <= ?
+        ORDER BY RANDOM()
+    '''
+    cards = db.execute(query, [left, now])
+    return cards
 
 @app.route('/general')
 @app.route('/general/<card_id>')
@@ -240,26 +257,36 @@ def memorize(card_type, card_id):
         type = 1
     elif card_type == "code":
         type = 2
+    elif card_type == "within_a_day":
+        type = -1
+
+    if type != None:
+        if card_id:
+            card = get_card_by_id(card_id)
+        else:
+            card = None
+            cards = get_cards(type)
+
+        if not cards == None:
+            card = cards.fetchone()
+
+        if not card:
+            flash("You've learned all the " + card_type + " cards.")
+            return redirect(url_for('cards'))
+
+        short_answer = (len(card['back']) < 75)
+        cards_len = cards.arraysize
+        return render_template('memorize.html',
+                            card=card,
+                            card_type=card_type,
+                            short_answer=short_answer,
+                            cards_len=cards_len
+                            )
     else:
         return redirect(url_for('cards'))
 
-    if card_id:
-        card = get_card_by_id(card_id)
-    else:
-        card = get_card(type)
-    if not card:
-        flash("You've learned all the " + card_type + " cards.")
-        return redirect(url_for('cards'))
-    short_answer = (len(card['back']) < 75)
-    return render_template('memorize.html',
-                           card=card,
-                           card_type=card_type,
-                           short_answer=short_answer)
-
-
-def get_card(type):
+def get_cards_by_type(type):
     db = get_db()
-
     query = '''
       SELECT
         id, type, front, back, known, weight, language
@@ -268,12 +295,17 @@ def get_card(type):
         type = ?
         and known = 0
       ORDER BY RANDOM()
-      LIMIT 1
+      LIMIT 2
     '''
 
     cur = db.execute(query, [type])
-    return cur.fetchone()
+    return cur
 
+
+def get_cards(type):
+    if type == -1:
+        return get_cards_within_a_day()
+    return get_cards_by_type(type)
 
 def get_card_by_id(card_id):
     db = get_db()

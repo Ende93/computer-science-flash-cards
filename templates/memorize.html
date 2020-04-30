@@ -64,10 +64,12 @@
             &nbsp;
             &nbsp;
             {% endif %}
+            {% if cards_len > 1 %}
             <a href="{{ url_for(card_type) }}" class="btn btn-primary btn-lg">
                 Next Card
                 <i class="fa fa-arrow-right"></i>
             </a>
+            {% endif %}
         </div>
     </div>
     {% if session.logged_in %}

@@ -86,7 +86,7 @@ def index():
         return redirect(url_for('login'))
 
 @app.route('/add_card')
-def add_card_page():
+def add_card():
     if not session.get('logged_in'):
         return redirect(url_for('login'))
     return render_template('add_card.html')
@@ -132,7 +132,7 @@ def filter_cards(filter_name):
 
 
 @app.route('/add', methods=['POST'])
-def add_card():
+def add():
     if not session.get('logged_in'):
         return redirect(url_for('login'))
     db = get_db()
@@ -142,7 +142,7 @@ def add_card():
                 request.form['back'],
                 request.form['weight'],
                 request.form['language'],
-                int(time() * 1000),
+                int(time() * 1000)
                 ])
     db.commit()
     flash('New card was successfully added.')

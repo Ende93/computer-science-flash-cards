@@ -1,4 +1,11 @@
 $(document).ready(function(){
+    $('.js-delete').click(function (e) {
+        e.preventDefault();
+        const bool = window.confirm('Confirm delete this note?')
+        if (bool) {
+            location.href = this.href;
+        }
+    })
     if ($('.memorizePanel').length != 0) {
 
         $('.flipCard').click(function(){

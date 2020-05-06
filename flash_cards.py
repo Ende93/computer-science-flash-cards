@@ -261,13 +261,16 @@ def memorize(card_type, card_id):
         type = -1
 
     if type != None:
+        cards = None
+        cards_len = 1
+
         if card_id:
             card = get_card_by_id(card_id)
         else:
-            card = None
             cards = get_cards(type)
+            cards_len = len(cards.fetchall())
 
-        if not cards == None:
+        if cards != None:
             card = cards.fetchone()
 
         if not card:
@@ -275,7 +278,6 @@ def memorize(card_type, card_id):
             return redirect(url_for('cards'))
 
         short_answer = (len(card['back']) < 75)
-        cards_len = cards.arraysize
         return render_template('memorize.html',
                             card=card,
                             card_type=card_type,
@@ -289,7 +291,7 @@ def get_cards_by_type(type):
     db = get_db()
     query = '''
       SELECT
-        id, type, front, back, known, weight, language
+        *
       FROM cards
       WHERE
         type = ?
@@ -312,7 +314,7 @@ def get_card_by_id(card_id):
 
     query = '''
       SELECT
-        id, type, front, back, known, weight
+        *
       FROM cards
       WHERE
         id = ?

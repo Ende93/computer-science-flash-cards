@@ -1,3 +1,17 @@
+# New Feature(this repo)
+1. Add language type for code;
+2. Add `within a day` type list;
+3. Add shell for `docker` running;
+4. Add `reset` for all known card;
+5. View cards without login;
+6. Opt card style;
+
+## how to use thie repo
+
+1. If you have old db, please go to `/alterdb` change table
+2. Just start to use it, uncomment the `/initdb` part, and go to `/initdb`, after that memory comment it again!
+
+
 # Computer Science Flash Cards
 
 This is a little website I've put together to allow me to easily make flash cards and quiz myself for memorization of:

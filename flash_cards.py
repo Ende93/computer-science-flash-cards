@@ -210,7 +210,7 @@ def delete(card_id):
 def within_a_day():
     return memorize("within_a_day", None)
 
-def get_cards_within_a_day():
+def get_cards_within_a_day(len = 1):
     now = int(time() * 1000)
     left = now - 24 * 60 * 60 * 1000
 
@@ -220,8 +220,9 @@ def get_cards_within_a_day():
         FROM cards
         where timestamp >= ? and timestamp <= ?
         ORDER BY RANDOM()
+        LIMIT ?
     '''
-    cards = db.execute(query, [left, now])
+    cards = db.execute(query, [left, now, len])
     return cards
 
 @app.route('/general')
@@ -261,17 +262,13 @@ def memorize(card_type, card_id):
         type = -1
 
     if type != None:
-        cards = None
-        cards_len = 1
+        cards_len = 0
 
         if card_id:
             card = get_card_by_id(card_id)
         else:
-            cards = get_cards(type)
-            cards_len = len(cards.fetchall())
-
-        if cards != None:
-            card = cards.fetchone()
+            card = get_cards(type, 1).fetchone()
+            cards_len = len(get_cards(type, 2).fetchall())
 
         if not card:
             flash("You've learned all the " + card_type + " cards.")
@@ -287,7 +284,7 @@ def memorize(card_type, card_id):
     else:
         return redirect(url_for('cards'))
 
-def get_cards_by_type(type):
+def get_cards_by_type(type, len = 2):
     db = get_db()
     query = '''
       SELECT
@@ -297,17 +294,17 @@ def get_cards_by_type(type):
         type = ?
         and known = 0
       ORDER BY RANDOM()
-      LIMIT 2
+      LIMIT ?
     '''
 
-    cur = db.execute(query, [type])
+    cur = db.execute(query, [type, len])
     return cur
 
 
-def get_cards(type):
+def get_cards(type, len = 1):
     if type == -1:
-        return get_cards_within_a_day()
-    return get_cards_by_type(type)
+        return get_cards_within_a_day(len)
+    return get_cards_by_type(type, len)
 
 def get_card_by_id(card_id):
     db = get_db()

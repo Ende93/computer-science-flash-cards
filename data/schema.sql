@@ -6,5 +6,6 @@ create table cards (
   front text not null,
   back text not null,
   weight integer default 0,
+  timestamp integer default 0,
   known boolean default 0
 );
